@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_weather/src/bloc/WeatherApiClient.dart';
-import 'package:flutter_weather/src/bloc/ApiKey.dart';
+import 'package:flutter_weather/src/api/WeatherApiClient.dart';
+import 'package:flutter_weather/src/api/ApiKey.dart';
 import 'package:flutter_weather/src/model/Weather.dart';
 import 'package:http/http.dart' as http;
 
