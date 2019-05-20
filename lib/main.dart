@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_weather/src/screens/WeatherScreen.dart';
+import 'package:bloc/bloc.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  BlocSupervisor().delegate = SimpleBlocDelegate();
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
@@ -13,5 +17,13 @@ class MyApp extends StatelessWidget {
       ),
       home: WeatherScreen(),
     );
+  }
+}
+
+class SimpleBlocDelegate extends BlocDelegate {
+  @override
+  onTransition(Bloc bloc, Transition transition) {
+    super.onTransition(bloc, transition);
+    print(transition);
   }
 }

@@ -8,19 +8,18 @@ class WeatherApiClient {
   final apiKey;
   final http.Client httpClient;
 
-  WeatherApiClient({
-    @required this.httpClient,
-    this.apiKey
-  }) : assert(httpClient != null);
+  WeatherApiClient({@required this.httpClient, this.apiKey})
+      : assert(httpClient != null),
+        assert(apiKey != null);
 
   Future<Weather> getWeatherData(String cityName) async {
     final url = '$baseUrl/data/2.5/weather?q=$cityName&appid=$apiKey';
-
+    print('fetching $url');
     final res = await this.httpClient.get(url);
     if (res.statusCode != 200) {
       throw Exception('error getting locationId for city');
     }
     final weatherJson = json.decode(res.body);
-    return Weather.fromJson(weatherJson['weather'][0]);
+    return Weather.fromJson(weatherJson);
   }
 }
