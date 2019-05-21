@@ -8,13 +8,12 @@ class WeatherWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(weather);
     final celsius = weather.temperatureAsCelsius.floor();
     return Container(
       decoration: BoxDecoration(gradient: LinearGradient(
         begin: Alignment.topCenter,
         end: Alignment(0.0, 0.0),
-        colors: [Colors.white, Colors.cyan],
+        colors: [Colors.white, getBackgroundColor(weather.id)],
       )),
       child: Center(
         child: Column(
@@ -39,5 +38,23 @@ class WeatherWidget extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Color getBackgroundColor(int weatherCondition){
+    if(weatherCondition > 802){
+      return Colors.blue;
+    }
+    else if(weatherCondition >=800){
+      return Colors.yellow;
+    }
+    else if(weatherCondition >=701){
+      return Colors.red;
+    }
+    else if(weatherCondition >=600){
+      return Colors.blueGrey;
+    } else if(weatherCondition >=300){
+      return Colors.indigo;
+    }
+    return Colors.black;
   }
 }

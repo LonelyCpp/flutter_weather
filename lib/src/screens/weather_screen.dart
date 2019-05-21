@@ -21,6 +21,7 @@ class WeatherScreen extends StatefulWidget {
 class _WeatherScreenState extends State<WeatherScreen> {
   WeatherBloc _weatherBloc;
   String _cityName = 'bengaluru';
+
   @override
   void initState() {
     super.initState();
@@ -37,8 +38,14 @@ class _WeatherScreenState extends State<WeatherScreen> {
           title: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text('Weather', style: TextStyle(color: Colors.black),),
-              Text(DateFormat('EEEE, MMMM yyyy').format(DateTime.now()), style: TextStyle(color: Colors.black45, fontSize: 14 ),)
+              Text(
+                'Weather',
+                style: TextStyle(color: Colors.black),
+              ),
+              Text(
+                DateFormat('EEEE, MMMM yyyy').format(DateTime.now()),
+                style: TextStyle(color: Colors.black45, fontSize: 14),
+              )
             ],
           ),
           actions: <Widget>[
@@ -46,12 +53,12 @@ class _WeatherScreenState extends State<WeatherScreen> {
               child: Padding(
                 padding: EdgeInsets.all(20),
                 child: Icon(
-                  Icons.more_horiz,
+                  Icons.public,
                   color: Colors.black,
                 ),
               ),
-              onTap: (){
-                // todo: implement change city
+              onTap: () {
+                this.showCityChangeDialog();
               },
             )
           ],
@@ -75,5 +82,33 @@ class _WeatherScreenState extends State<WeatherScreen> {
                 }
               }),
         ));
+  }
+
+  void showCityChangeDialog() {
+    showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Change city'),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('ok', style: TextStyle(color: Theme.of(context).accentColor),),
+                onPressed: (){
+                  _weatherBloc.dispatch(FetchWeather(cityName: _cityName));
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+            content: TextField(
+              onChanged: (text){
+                _cityName = text;
+              },
+              decoration: InputDecoration(
+                hintText: 'Enter the name of your city',
+              ),
+            ),
+          );
+        });
   }
 }
