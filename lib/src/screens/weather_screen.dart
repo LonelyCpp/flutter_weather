@@ -8,6 +8,7 @@ import 'package:flutter_weather/src/api/api_keys.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_weather/src/widgets/weather_widget.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
 class WeatherScreen extends StatefulWidget {
   WeatherRepository weatherRepository = WeatherRepository(
@@ -19,7 +20,7 @@ class WeatherScreen extends StatefulWidget {
 
 class _WeatherScreenState extends State<WeatherScreen> {
   WeatherBloc _weatherBloc;
-  String _cityName = 'udupi';
+  String _cityName = 'bengaluru';
   @override
   void initState() {
     super.initState();
@@ -33,11 +34,21 @@ class _WeatherScreenState extends State<WeatherScreen> {
         appBar: AppBar(
           backgroundColor: Colors.white,
           elevation: 0,
+          title: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text('Weather', style: TextStyle(color: Colors.black),),
+              Text(DateFormat('EEEE, MMMM yyyy').format(DateTime.now()), style: TextStyle(color: Colors.black45, fontSize: 14 ),)
+            ],
+          ),
           actions: <Widget>[
             GestureDetector(
-              child: Icon(
-                Icons.more_horiz,
-                color: Colors.black,
+              child: Padding(
+                padding: EdgeInsets.all(20),
+                child: Icon(
+                  Icons.more_horiz,
+                  color: Colors.black,
+                ),
               ),
               onTap: (){
                 // todo: implement change city
