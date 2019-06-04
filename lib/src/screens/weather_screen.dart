@@ -33,18 +33,17 @@ class _WeatherScreenState extends State<WeatherScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.white,
+          backgroundColor: Theme.of(context).primaryColor,
           elevation: 0,
           title: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text(
-                'Weather',
-                style: TextStyle(color: Colors.black),
-              ),
-              Text(
                 DateFormat('EEEE, MMMM yyyy').format(DateTime.now()),
-                style: TextStyle(color: Colors.black45, fontSize: 14),
+                style: TextStyle(
+                  color: Theme.of(context).accentColor.withAlpha(80),
+                  fontSize: 14
+                ),
               )
             ],
           ),
@@ -54,7 +53,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                 padding: EdgeInsets.all(20),
                 child: Icon(
                   Icons.public,
-                  color: Colors.black,
+                  color: Theme.of(context).accentColor,
                 ),
               ),
               onTap: () {
