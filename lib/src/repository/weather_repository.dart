@@ -8,6 +8,10 @@ class WeatherRepository {
       : assert(weatherApiClient != null);
 
   Future<Weather> getWeather(String cityName) async {
-    return await weatherApiClient.getWeatherData(cityName);
+    var weather = await weatherApiClient.getWeatherData(cityName);
+    var weathers = await weatherApiClient.getForecast(cityName);
+    weather.forecast = weathers;
+    print('getting' + weathers.length.toString());
+    return weather;
   }
 }

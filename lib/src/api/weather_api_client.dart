@@ -22,4 +22,16 @@ class WeatherApiClient {
     final weatherJson = json.decode(res.body);
     return Weather.fromJson(weatherJson);
   }
+
+  Future<List<Weather>> getForecast(String cityName) async {
+    final url = '$baseUrl/data/2.5/forecast?q=$cityName&appid=$apiKey';
+    print('fetching $url');
+    final res = await this.httpClient.get(url);
+    if (res.statusCode != 200) {
+      throw Exception('error getting locationId for city');
+    }
+    final forecastJson = json.decode(res.body);
+    List<Weather> weathers = Weather.fromForecastJson(forecastJson);
+    return weathers;
+  }
 }

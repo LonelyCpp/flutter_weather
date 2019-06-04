@@ -8,6 +8,7 @@ import 'package:flutter_weather/src/api/api_keys.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_weather/src/widgets/weather_widget.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
 class WeatherScreen extends StatefulWidget {
   WeatherRepository weatherRepository = WeatherRepository(
@@ -19,7 +20,8 @@ class WeatherScreen extends StatefulWidget {
 
 class _WeatherScreenState extends State<WeatherScreen> {
   WeatherBloc _weatherBloc;
-  String _cityName = 'udupi';
+  String _cityName = 'bengaluru';
+
   @override
   void initState() {
     super.initState();
@@ -31,16 +33,31 @@ class _WeatherScreenState extends State<WeatherScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.white,
+          backgroundColor: Theme.of(context).primaryColor,
           elevation: 0,
+          title: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                DateFormat('EEEE, MMMM yyyy').format(DateTime.now()),
+                style: TextStyle(
+                  color: Theme.of(context).accentColor.withAlpha(80),
+                  fontSize: 14
+                ),
+              )
+            ],
+          ),
           actions: <Widget>[
             GestureDetector(
-              child: Icon(
-                Icons.more_horiz,
-                color: Colors.black,
+              child: Padding(
+                padding: EdgeInsets.all(20),
+                child: Icon(
+                  Icons.public,
+                  color: Theme.of(context).accentColor,
+                ),
               ),
-              onTap: (){
-                // todo: implement change city
+              onTap: () {
+                this.showCityChangeDialog();
               },
             )
           ],
@@ -64,5 +81,33 @@ class _WeatherScreenState extends State<WeatherScreen> {
                 }
               }),
         ));
+  }
+
+  void showCityChangeDialog() {
+    showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Change city'),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('ok', style: TextStyle(color: Theme.of(context).accentColor),),
+                onPressed: (){
+                  _weatherBloc.dispatch(FetchWeather(cityName: _cityName));
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+            content: TextField(
+              onChanged: (text){
+                _cityName = text;
+              },
+              decoration: InputDecoration(
+                hintText: 'Enter the name of your city',
+              ),
+            ),
+          );
+        });
   }
 }
