@@ -7,9 +7,9 @@ class Weather {
   String icon;
   String main;
   String cityName;
-  double temperature;
-  double maxTemperature;
-  double minTemperature;
+  Temperature temperature;
+  Temperature maxTemperature;
+  Temperature minTemperature;
   List<Weather> forecast;
 
   Weather(
@@ -23,7 +23,6 @@ class Weather {
       this.maxTemperature,
       this.minTemperature});
 
-
   static Weather fromJson(Map<String, dynamic> json) {
     final weather = json['weather'][0];
     return Weather(
@@ -32,9 +31,9 @@ class Weather {
         icon: weather['icon'],
         main: weather['main'],
         cityName: json['name'],
-        temperature: intToDouble(json['main']['temp']),
-        maxTemperature: intToDouble(json['main']['temp_max']),
-        minTemperature: intToDouble(json['main']['temp_min']),
+        temperature: Temperature(intToDouble(json['main']['temp'])),
+        maxTemperature: Temperature(intToDouble(json['main']['temp_max'])),
+        minTemperature: Temperature(intToDouble(json['main']['temp_min'])),
         time: json['dt']);
   }
 
@@ -42,13 +41,10 @@ class Weather {
     final weathers = List<Weather>();
     for (final item in json['list']) {
       weathers.add(Weather(
-          time: item['dt'], temperature: intToDouble(item['main']['temp'])));
+          time: item['dt'],
+          temperature: Temperature(intToDouble(item['main']['temp']))));
     }
     return weathers;
-  }
-
-  double get temperatureAsCelsius {
-    return temperature - 273.15;
   }
 
   @override

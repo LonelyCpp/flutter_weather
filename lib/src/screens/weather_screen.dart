@@ -11,7 +11,7 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
 class WeatherScreen extends StatefulWidget {
-  WeatherRepository weatherRepository = WeatherRepository(
+  final WeatherRepository weatherRepository = WeatherRepository(
       weatherApiClient: WeatherApiClient(
           httpClient: http.Client(), apiKey: ApiKey.OPEN_WEATHER_MAP));
   @override
@@ -41,9 +41,8 @@ class _WeatherScreenState extends State<WeatherScreen> {
               Text(
                 DateFormat('EEEE, MMMM yyyy').format(DateTime.now()),
                 style: TextStyle(
-                  color: Theme.of(context).accentColor.withAlpha(80),
-                  fontSize: 14
-                ),
+                    color: Theme.of(context).accentColor.withAlpha(80),
+                    fontSize: 14),
               )
             ],
           ),
@@ -64,22 +63,54 @@ class _WeatherScreenState extends State<WeatherScreen> {
         ),
         backgroundColor: Colors.white,
         body: Material(
-          color: Colors.white,
-          child: BlocBuilder(
-              bloc: _weatherBloc,
-              builder: (_, WeatherState weatherState) {
-                if (weatherState is WeatherEmpty) {
-                  return Text('empty');
-                } else if (weatherState is WeatherLoaded) {
-                  return WeatherWidget(
-                    weather: weatherState.weather,
-                  );
-                } else if (weatherState is WeatherError) {
-                  return Text('error');
-                } else if (weatherState is WeatherLoading) {
-                  return CircularProgressIndicator();
-                }
-              }),
+          color: Theme.of(context).accentColor,
+          child: Container(
+            constraints: BoxConstraints.expand(),
+            decoration: BoxDecoration(color: Theme.of(context).primaryColor),
+            child: BlocBuilder(
+                bloc: _weatherBloc,
+                builder: (_, WeatherState weatherState) {
+                  if (weatherState is WeatherLoaded) {
+                    return WeatherWidget(
+                      weather: weatherState.weather,
+                    );
+                  } else if (weatherState is WeatherError ||
+                      weatherState is WeatherEmpty) {
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Icon(
+                          Icons.error_outline,
+                          color: Colors.redAccent,
+                          size: 24,
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          'There was an error fetching weather data',
+                          style:
+                              TextStyle(color: Theme.of(context).accentColor),
+                        ),
+                        FlatButton(
+                          child: Text(
+                            "Try Again",
+                            style:
+                                TextStyle(color: Theme.of(context).accentColor),
+                          ),
+                          onPressed: _fetchWeather,
+                        )
+                      ],
+                    );
+                  } else if (weatherState is WeatherLoading) {
+                    return Center(
+                      child: CircularProgressIndicator(
+                        backgroundColor: Theme.of(context).primaryColor,
+                      ),
+                    );
+                  }
+                }),
+          ),
         ));
   }
 
@@ -92,15 +123,19 @@ class _WeatherScreenState extends State<WeatherScreen> {
             title: Text('Change city'),
             actions: <Widget>[
               FlatButton(
-                child: Text('ok', style: TextStyle(color: Theme.of(context).accentColor),),
-                onPressed: (){
-                  _weatherBloc.dispatch(FetchWeather(cityName: _cityName));
+                child: Text(
+                  'ok',
+                  style: TextStyle(color: Theme.of(context).primaryColor),
+                ),
+                onPressed: () {
+                  _fetchWeather();
                   Navigator.of(context).pop();
                 },
               )
             ],
             content: TextField(
-              onChanged: (text){
+              autofocus: true,
+              onChanged: (text) {
                 _cityName = text;
               },
               decoration: InputDecoration(
@@ -109,5 +144,9 @@ class _WeatherScreenState extends State<WeatherScreen> {
             ),
           );
         });
+  }
+
+  _fetchWeather() {
+    _weatherBloc.dispatch(FetchWeather(cityName: _cityName));
   }
 }
