@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_weather/src/model/weather.dart';
+import 'package:flutter_weather/src/widgets/forecast_horizontal_widget.dart';
 import 'package:flutter_weather/src/widgets/value_tile.dart';
 import 'package:intl/intl.dart';
 
@@ -66,37 +67,34 @@ class WeatherWidget extends StatelessWidget {
               ),
               padding: EdgeInsets.all(10),
             ),
-            Container(
-              height: 70,
-              child: ListView.separated(
-                scrollDirection: Axis.horizontal,
-                shrinkWrap: true,
-                itemCount: this.weather.forecast.length,
-                separatorBuilder: (context, index) => Divider(
-                      height: 100,
-                      color: Colors.white,
-                    ),
-                padding: EdgeInsets.only(left: 10, right: 10),
-                itemBuilder: (context, index) {
-                  final item = this.weather.forecast[index];
-                  return Padding(
-                    padding: const EdgeInsets.only(left: 10, right: 10),
-                    child: Center(
-                        child: ValueTile(
-                            DateFormat('h aa').format(
-                                DateTime.fromMillisecondsSinceEpoch(
-                                    item.time * 1000)),
-                            '${item.temperature.celsius.round()}°')),
-                  );
-                },
-              ),
-            ),
+            ForecastHorizontal(weathers: weather.forecast),
             Padding(
               child: Divider(
                 color: Theme.of(context).accentColor.withAlpha(50),
               ),
               padding: EdgeInsets.all(10),
             ),
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+              ValueTile(
+                  "sunrise",
+                  DateFormat('h:m a').format(
+                      DateTime.fromMillisecondsSinceEpoch(
+                          this.weather.sunrise * 1000))),
+              Padding(
+                padding: const EdgeInsets.only(left: 20, right: 20),
+                child: Center(
+                    child: Container(
+                  width: 1,
+                  height: 30,
+                  color: Theme.of(context).accentColor.withAlpha(50),
+                )),
+              ),
+              ValueTile(
+                  "sunset",
+                  DateFormat('h:m a').format(
+                      DateTime.fromMillisecondsSinceEpoch(
+                          this.weather.sunset * 1000))),
+            ]),
           ],
         ),
       ),
