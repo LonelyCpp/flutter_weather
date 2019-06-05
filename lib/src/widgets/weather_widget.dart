@@ -10,7 +10,6 @@ class WeatherWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final celsius = weather.temperatureAsCelsius.floor();
     return Container(
       decoration: BoxDecoration(color: Theme.of(context).primaryColor),
       child: Center(
@@ -18,7 +17,7 @@ class WeatherWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              weather.cityName.toUpperCase(),
+              this.weather.cityName.toUpperCase(),
               style: TextStyle(
                   fontWeight: FontWeight.w900,
                   letterSpacing: 5,
@@ -29,7 +28,7 @@ class WeatherWidget extends StatelessWidget {
               height: 20,
             ),
             Text(
-              weather.description.toUpperCase(),
+              this.weather.description.toUpperCase(),
               style: TextStyle(
                   fontWeight: FontWeight.w100,
                   letterSpacing: 5,
@@ -40,12 +39,27 @@ class WeatherWidget extends StatelessWidget {
               height: 20,
             ),
             Text(
-              '$celsius°',
+              '${this.weather.temperature.celsius.round()}°',
               style: TextStyle(
                   fontSize: 100,
                   fontWeight: FontWeight.w100,
                   color: Theme.of(context).accentColor),
             ),
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+              ValueTile(
+                  "max", '${this.weather.maxTemperature.celsius.round()}°'),
+              Padding(
+                padding: const EdgeInsets.only(left: 20, right: 20),
+                child: Center(
+                    child: Container(
+                  width: 1,
+                  height: 30,
+                  color: Theme.of(context).accentColor.withAlpha(50),
+                )),
+              ),
+              ValueTile(
+                  "min", '${this.weather.minTemperature.celsius.round()}°'),
+            ]),
             Padding(
               child: Divider(
                 color: Theme.of(context).accentColor.withAlpha(50),
@@ -55,26 +69,26 @@ class WeatherWidget extends StatelessWidget {
             Container(
               height: 70,
               child: ListView.separated(
-                  scrollDirection: Axis.horizontal,
-                  shrinkWrap: true,
-                  itemCount: this.weather.forecast.length,
-                  separatorBuilder: (context, index) => Divider(
-                    height: 100,
-                    color: Colors.white,
-                  ),
-                  padding: EdgeInsets.only(left: 10, right: 10),
-                  itemBuilder: (context, index) {
-                    final item = weather.forecast[index];
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Center(
-                          child: ValueTile(
-                              DateFormat('h:m a, EE').format(DateTime.fromMillisecondsSinceEpoch(item.time * 1000)),
-//                            item.time.toString(),
-                              item.temperature.toString())),
-                    );
-                  }
-                  ,
+                scrollDirection: Axis.horizontal,
+                shrinkWrap: true,
+                itemCount: this.weather.forecast.length,
+                separatorBuilder: (context, index) => Divider(
+                      height: 100,
+                      color: Colors.white,
+                    ),
+                padding: EdgeInsets.only(left: 10, right: 10),
+                itemBuilder: (context, index) {
+                  final item = this.weather.forecast[index];
+                  return Padding(
+                    padding: const EdgeInsets.only(left: 10, right: 10),
+                    child: Center(
+                        child: ValueTile(
+                            DateFormat('h aa').format(
+                                DateTime.fromMillisecondsSinceEpoch(
+                                    item.time * 1000)),
+                            '${item.temperature.celsius.round()}°')),
+                  );
+                },
               ),
             ),
             Padding(
@@ -83,12 +97,6 @@ class WeatherWidget extends StatelessWidget {
               ),
               padding: EdgeInsets.all(10),
             ),
-            Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  ValueTile("Max Temp", this.weather.maxTemperature.toString()),
-                  ValueTile("Min Temp", this.weather.minTemperature.toString()),
-                ])
           ],
         ),
       ),

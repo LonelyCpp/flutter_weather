@@ -11,7 +11,7 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
 class WeatherScreen extends StatefulWidget {
-  WeatherRepository weatherRepository = WeatherRepository(
+  final WeatherRepository weatherRepository = WeatherRepository(
       weatherApiClient: WeatherApiClient(
           httpClient: http.Client(), apiKey: ApiKey.OPEN_WEATHER_MAP));
   @override
@@ -70,13 +70,12 @@ class _WeatherScreenState extends State<WeatherScreen> {
             child: BlocBuilder(
                 bloc: _weatherBloc,
                 builder: (_, WeatherState weatherState) {
-                  if (weatherState is WeatherEmpty) {
-                    return Text('empty');
-                  } else if (weatherState is WeatherLoaded) {
+                  if (weatherState is WeatherLoaded) {
                     return WeatherWidget(
                       weather: weatherState.weather,
                     );
-                  } else if (weatherState is WeatherError) {
+                  } else if (weatherState is WeatherError ||
+                      weatherState is WeatherEmpty) {
                     return Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
