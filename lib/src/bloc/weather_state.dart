@@ -18,4 +18,10 @@ class WeatherLoaded extends WeatherState {
         super([weather]);
 }
 
-class WeatherError extends WeatherState {}
+class WeatherError extends WeatherState {
+  final int errorCode;
+
+  WeatherError({@required this.errorCode})
+      : assert(errorCode != null),
+        super([errorCode]);
+}

@@ -5,11 +5,13 @@ import 'package:meta/meta.dart';
 import 'package:flutter_weather/src/bloc/weather_event.dart';
 import 'package:flutter_weather/src/bloc/weather_state.dart';
 import 'package:flutter_weather/src/repository/weather_repository.dart';
+import 'package:flutter_weather/src/api/http_exception.dart';
 
 class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
   final WeatherRepository weatherRepository;
 
-  WeatherBloc({@required this.weatherRepository}):assert(weatherRepository!=null);
+  WeatherBloc({@required this.weatherRepository})
+      : assert(weatherRepository != null);
 
   @override
   WeatherState get initialState {
@@ -18,14 +20,19 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
 
   @override
   Stream<WeatherState> mapEventToState(WeatherEvent event) async* {
-    if(event is FetchWeather) {
+    if (event is FetchWeather) {
       yield WeatherLoading();
-      try{
-        final Weather weather = await weatherRepository.getWeather(event.cityName);
+      try {
+        final Weather weather =
+            await weatherRepository.getWeather(event.cityName);
         yield WeatherLoaded(weather: weather);
-      } catch (error){
-        print(error);
-        yield WeatherError();
+      } catch (exception) {
+        print(exception);
+        if (exception is HTTPException) {
+          yield WeatherError(errorCode: exception.code);
+        } else {
+          yield WeatherError(errorCode: 500);
+        }
       }
     }
   }

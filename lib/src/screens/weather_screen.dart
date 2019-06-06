@@ -54,6 +54,7 @@ class _WeatherScreenState extends State<WeatherScreen> with TickerProviderStateM
           ),
           actions: <Widget>[
             GestureDetector(
+
               child: Padding(
                 padding: EdgeInsets.all(20),
                 child: Icon(
@@ -86,6 +87,12 @@ class _WeatherScreenState extends State<WeatherScreen> with TickerProviderStateM
                       );
                     } else if (weatherState is WeatherError ||
                         weatherState is WeatherEmpty) {
+                      String errorText = 'There was an error fetching weather data';
+                      if(weatherState is WeatherError){
+                        if(weatherState.errorCode == 404){
+                          errorText = 'We have trouble fetching weather for $_cityName';
+                        }
+                      }
                       return Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
@@ -98,7 +105,7 @@ class _WeatherScreenState extends State<WeatherScreen> with TickerProviderStateM
                             height: 10,
                           ),
                           Text(
-                            'There was an error fetching weather data',
+                            errorText,
                             style:
                                 TextStyle(color: Theme.of(context).accentColor),
                           ),
