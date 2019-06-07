@@ -19,6 +19,11 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  http: ^0.12.0+2
+  equatable: ^0.2.4
+  bloc: ^0.13.0
+  flutter_bloc: ^0.13.0
+  intl: ^0.15.8
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -39,6 +44,11 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+
+  fonts:
+    - family: WeatherIcons
+      fonts:
+        - asset: fonts/weathericons-regular.ttf
 
   # To add assets to your application, add an assets section, like this:
   # assets:

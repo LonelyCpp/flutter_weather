@@ -9,6 +9,9 @@
 .history
 .svn/
 
+#api keys
+lib/src/api/api_keys.dart
+
 # IntelliJ related
 *.iml
 *.ipr
