@@ -39,6 +39,10 @@ class WeatherWidget extends StatelessWidget {
             SizedBox(
               height: 20,
             ),
+            Icon(weather.getIconData(), color: Theme.of(context).accentColor, size: 70,),
+            SizedBox(
+              height: 20,
+            ),
             Text(
               '${this.weather.temperature.celsius.round()}°',
               style: TextStyle(
