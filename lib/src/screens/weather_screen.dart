@@ -18,15 +18,21 @@ class WeatherScreen extends StatefulWidget {
   _WeatherScreenState createState() => _WeatherScreenState();
 }
 
-class _WeatherScreenState extends State<WeatherScreen> {
+class _WeatherScreenState extends State<WeatherScreen> with TickerProviderStateMixin  {
   WeatherBloc _weatherBloc;
   String _cityName = 'bengaluru';
+  AnimationController _fadeController;
+  Animation<double> _fadeAnimation;
+
 
   @override
   void initState() {
     super.initState();
     _weatherBloc = WeatherBloc(weatherRepository: widget.weatherRepository);
     _weatherBloc.dispatch(FetchWeather(cityName: _cityName));
+    _fadeController = AnimationController(
+        duration: const Duration(milliseconds: 1000), vsync: this);
+    _fadeAnimation = CurvedAnimation(parent: _fadeController, curve: Curves.easeIn);
   }
 
   @override
@@ -48,6 +54,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
           ),
           actions: <Widget>[
             GestureDetector(
+
               child: Padding(
                 padding: EdgeInsets.all(20),
                 child: Icon(
@@ -67,49 +74,60 @@ class _WeatherScreenState extends State<WeatherScreen> {
           child: Container(
             constraints: BoxConstraints.expand(),
             decoration: BoxDecoration(color: Theme.of(context).primaryColor),
-            child: BlocBuilder(
-                bloc: _weatherBloc,
-                builder: (_, WeatherState weatherState) {
-                  if (weatherState is WeatherLoaded) {
-                    return WeatherWidget(
-                      weather: weatherState.weather,
-                    );
-                  } else if (weatherState is WeatherError ||
-                      weatherState is WeatherEmpty) {
-                    return Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Icon(
-                          Icons.error_outline,
-                          color: Colors.redAccent,
-                          size: 24,
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          'There was an error fetching weather data',
-                          style:
-                              TextStyle(color: Theme.of(context).accentColor),
-                        ),
-                        FlatButton(
-                          child: Text(
-                            "Try Again",
+            child: FadeTransition(
+              opacity: _fadeAnimation,
+              child: BlocBuilder(
+                  bloc: _weatherBloc,
+                  builder: (_, WeatherState weatherState) {
+                    if (weatherState is WeatherLoaded) {
+                      _fadeController.reset();
+                      _fadeController.forward();
+                      return WeatherWidget(
+                        weather: weatherState.weather,
+                      );
+                    } else if (weatherState is WeatherError ||
+                        weatherState is WeatherEmpty) {
+                      String errorText = 'There was an error fetching weather data';
+                      if(weatherState is WeatherError){
+                        if(weatherState.errorCode == 404){
+                          errorText = 'We have trouble fetching weather for $_cityName';
+                        }
+                      }
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Icon(
+                            Icons.error_outline,
+                            color: Colors.redAccent,
+                            size: 24,
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            errorText,
                             style:
                                 TextStyle(color: Theme.of(context).accentColor),
                           ),
-                          onPressed: _fetchWeather,
-                        )
-                      ],
-                    );
-                  } else if (weatherState is WeatherLoading) {
-                    return Center(
-                      child: CircularProgressIndicator(
-                        backgroundColor: Theme.of(context).primaryColor,
-                      ),
-                    );
-                  }
-                }),
+                          FlatButton(
+                            child: Text(
+                              "Try Again",
+                              style:
+                                  TextStyle(color: Theme.of(context).accentColor),
+                            ),
+                            onPressed: _fetchWeather,
+                          )
+                        ],
+                      );
+                    } else if (weatherState is WeatherLoading) {
+                      return Center(
+                        child: CircularProgressIndicator(
+                          backgroundColor: Theme.of(context).primaryColor,
+                        ),
+                      );
+                    }
+                  }),
+            ),
           ),
         ));
   }

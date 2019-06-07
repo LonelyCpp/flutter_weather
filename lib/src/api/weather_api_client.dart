@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter_weather/src/api/http_exception.dart';
 import 'package:flutter_weather/src/model/weather.dart';
 import 'package:meta/meta.dart';
 import 'package:http/http.dart' as http;
@@ -17,7 +18,7 @@ class WeatherApiClient {
     print('fetching $url');
     final res = await this.httpClient.get(url);
     if (res.statusCode != 200) {
-      throw Exception('error getting locationId for city');
+      throw HTTPException(res.statusCode, "unable to fetch weather data");
     }
     final weatherJson = json.decode(res.body);
     return Weather.fromJson(weatherJson);
@@ -28,7 +29,7 @@ class WeatherApiClient {
     print('fetching $url');
     final res = await this.httpClient.get(url);
     if (res.statusCode != 200) {
-      throw Exception('error getting locationId for city');
+      throw HTTPException(res.statusCode, "unable to fetch weather data");
     }
     final forecastJson = json.decode(res.body);
     List<Weather> weathers = Weather.fromForecastJson(forecastJson);

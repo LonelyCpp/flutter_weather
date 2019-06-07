@@ -11,7 +11,6 @@ class WeatherRepository {
     var weather = await weatherApiClient.getWeatherData(cityName);
     var weathers = await weatherApiClient.getForecast(cityName);
     weather.forecast = weathers;
-    print('getting' + weathers.length.toString());
     return weather;
   }
 }
