@@ -67,10 +67,6 @@ class _AppStateContainerState extends State<AppStateContainer> {
   updateTheme(ThemeData value) {
     setState(() {
       _theme = value;
-      Theme.of(context).copyWith(
-        primaryColor: value.primaryColor,
-        accentColor: value.accentColor,
-      );
     });
   }
 }
@@ -85,8 +81,5 @@ class _InheritedStateContainer extends InheritedWidget {
   }) : super(key: key, child: child);
 
   @override
-  bool updateShouldNotify(_InheritedStateContainer oldWidget) {
-    print('updateShouldNotify');
-    return true;
-  }
+  bool updateShouldNotify(_InheritedStateContainer oldWidget) => true;
 }
