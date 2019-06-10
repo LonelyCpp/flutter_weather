@@ -30,7 +30,7 @@ class ForecastHorizontal extends StatelessWidget {
             padding: const EdgeInsets.only(left: 10, right: 10),
             child: Center(
                 child: ValueTile(
-              DateFormat('h aa').format(
+              DateFormat('E, ha').format(
                   DateTime.fromMillisecondsSinceEpoch(item.time * 1000)),
               '${item.temperature.celsius.round()}°',
               iconData: item.getIconData(),

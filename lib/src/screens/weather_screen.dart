@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_weather/main.dart';
 import 'package:flutter_weather/src/api/weather_api_client.dart';
 import 'package:flutter_weather/src/bloc/weather_bloc.dart';
 import 'package:flutter_weather/src/bloc/weather_event.dart';
@@ -6,9 +7,12 @@ import 'package:flutter_weather/src/bloc/weather_state.dart';
 import 'package:flutter_weather/src/repository/weather_repository.dart';
 import 'package:flutter_weather/src/api/api_keys.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_weather/src/themes.dart';
 import 'package:flutter_weather/src/widgets/weather_widget.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+
+enum OptionsMenu { changeCity, nightMode, lightMode }
 
 class WeatherScreen extends StatefulWidget {
   final WeatherRepository weatherRepository = WeatherRepository(
@@ -18,12 +22,12 @@ class WeatherScreen extends StatefulWidget {
   _WeatherScreenState createState() => _WeatherScreenState();
 }
 
-class _WeatherScreenState extends State<WeatherScreen> with TickerProviderStateMixin  {
+class _WeatherScreenState extends State<WeatherScreen>
+    with TickerProviderStateMixin {
   WeatherBloc _weatherBloc;
   String _cityName = 'bengaluru';
   AnimationController _fadeController;
   Animation<double> _fadeAnimation;
-
 
   @override
   void initState() {
@@ -32,14 +36,15 @@ class _WeatherScreenState extends State<WeatherScreen> with TickerProviderStateM
     _weatherBloc.dispatch(FetchWeather(cityName: _cityName));
     _fadeController = AnimationController(
         duration: const Duration(milliseconds: 1000), vsync: this);
-    _fadeAnimation = CurvedAnimation(parent: _fadeController, curve: Curves.easeIn);
+    _fadeAnimation =
+        CurvedAnimation(parent: _fadeController, curve: Curves.easeIn);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Theme.of(context).primaryColor,
+          backgroundColor: AppStateContainer.of(context).theme.primaryColor,
           elevation: 0,
           title: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -47,33 +52,43 @@ class _WeatherScreenState extends State<WeatherScreen> with TickerProviderStateM
               Text(
                 DateFormat('EEEE, MMMM yyyy').format(DateTime.now()),
                 style: TextStyle(
-                    color: Theme.of(context).accentColor.withAlpha(80),
+                    color: AppStateContainer.of(context)
+                        .theme
+                        .accentColor
+                        .withAlpha(80),
                     fontSize: 14),
               )
             ],
           ),
           actions: <Widget>[
-            GestureDetector(
-
-              child: Padding(
-                padding: EdgeInsets.all(20),
+            PopupMenuButton<OptionsMenu>(
                 child: Icon(
-                  Icons.public,
-                  color: Theme.of(context).accentColor,
+                  Icons.more_vert,
+                  color: AppStateContainer.of(context).theme.accentColor,
                 ),
-              ),
-              onTap: () {
-                this.showCityChangeDialog();
-              },
-            )
+                onSelected: this._onOptionMenuItemSelected,
+                itemBuilder: (context) => <PopupMenuEntry<OptionsMenu>>[
+                      PopupMenuItem<OptionsMenu>(
+                        value: OptionsMenu.changeCity,
+                        child: Text("change city"),
+                      ),
+                      PopupMenuItem<OptionsMenu>(
+                        value: OptionsMenu.nightMode,
+                        child: Text("night mode"),
+                      ),
+                      PopupMenuItem<OptionsMenu>(
+                        value: OptionsMenu.lightMode,
+                        child: Text("light mode"),
+                      ),
+                    ])
           ],
         ),
         backgroundColor: Colors.white,
         body: Material(
-          color: Theme.of(context).accentColor,
           child: Container(
             constraints: BoxConstraints.expand(),
-            decoration: BoxDecoration(color: Theme.of(context).primaryColor),
+            decoration: BoxDecoration(
+                color: AppStateContainer.of(context).theme.primaryColor),
             child: FadeTransition(
               opacity: _fadeAnimation,
               child: BlocBuilder(
@@ -87,10 +102,12 @@ class _WeatherScreenState extends State<WeatherScreen> with TickerProviderStateM
                       );
                     } else if (weatherState is WeatherError ||
                         weatherState is WeatherEmpty) {
-                      String errorText = 'There was an error fetching weather data';
-                      if(weatherState is WeatherError){
-                        if(weatherState.errorCode == 404){
-                          errorText = 'We have trouble fetching weather for $_cityName';
+                      String errorText =
+                          'There was an error fetching weather data';
+                      if (weatherState is WeatherError) {
+                        if (weatherState.errorCode == 404) {
+                          errorText =
+                              'We have trouble fetching weather for $_cityName';
                         }
                       }
                       return Column(
@@ -106,14 +123,18 @@ class _WeatherScreenState extends State<WeatherScreen> with TickerProviderStateM
                           ),
                           Text(
                             errorText,
-                            style:
-                                TextStyle(color: Theme.of(context).accentColor),
+                            style: TextStyle(
+                                color: AppStateContainer.of(context)
+                                    .theme
+                                    .accentColor),
                           ),
                           FlatButton(
                             child: Text(
                               "Try Again",
-                              style:
-                                  TextStyle(color: Theme.of(context).accentColor),
+                              style: TextStyle(
+                                  color: AppStateContainer.of(context)
+                                      .theme
+                                      .accentColor),
                             ),
                             onPressed: _fetchWeather,
                           )
@@ -122,7 +143,8 @@ class _WeatherScreenState extends State<WeatherScreen> with TickerProviderStateM
                     } else if (weatherState is WeatherLoading) {
                       return Center(
                         child: CircularProgressIndicator(
-                          backgroundColor: Theme.of(context).primaryColor,
+                          backgroundColor:
+                              AppStateContainer.of(context).theme.primaryColor,
                         ),
                       );
                     }
@@ -132,18 +154,19 @@ class _WeatherScreenState extends State<WeatherScreen> with TickerProviderStateM
         ));
   }
 
-  void showCityChangeDialog() {
+  void _showCityChangeDialog() {
     showDialog(
         context: context,
         barrierDismissible: true,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Change city'),
+            backgroundColor: Colors.white,
+            title: Text('Change city', style: TextStyle(color: Colors.black)),
             actions: <Widget>[
               FlatButton(
                 child: Text(
                   'ok',
-                  style: TextStyle(color: Theme.of(context).primaryColor),
+                  style: TextStyle(color: Colors.black),
                 ),
                 onPressed: () {
                   _fetchWeather();
@@ -158,10 +181,26 @@ class _WeatherScreenState extends State<WeatherScreen> with TickerProviderStateM
               },
               decoration: InputDecoration(
                 hintText: 'Enter the name of your city',
+                hintStyle: TextStyle(color: Colors.black),
               ),
+              style: TextStyle(color: Colors.black),
             ),
           );
         });
+  }
+
+  _onOptionMenuItemSelected(OptionsMenu item) {
+    switch (item) {
+      case OptionsMenu.changeCity:
+        this._showCityChangeDialog();
+        break;
+      case OptionsMenu.nightMode:
+        AppStateContainer.of(context).updateTheme(Themes.DARK_THEME_CODE);
+        break;
+      case OptionsMenu.lightMode:
+        AppStateContainer.of(context).updateTheme(Themes.LIGHT_THEME_CODE);
+        break;
+    }
   }
 
   _fetchWeather() {
