@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 
 class Themes {
-  static final dark = ThemeData(
+  static const SHARED_PREF_KEY = "theme_code";
+  static const DARK_THEME_CODE = 0;
+  static const LIGHT_THEME_CODE = 1;
+
+  static final _dark = ThemeData(
     primarySwatch: MaterialColor(
       Colors.black.value,
       const <int, Color>{
@@ -19,7 +23,8 @@ class Themes {
     ),
     accentColor: Colors.white,
   );
-  static final light = ThemeData(
+
+  static final _light = ThemeData(
     primarySwatch: MaterialColor(
       Colors.white.value,
       const <int, Color>{
@@ -37,4 +42,12 @@ class Themes {
     ),
     accentColor: Colors.black,
   );
+
+  static ThemeData getTheme(int code) {
+    if(code == LIGHT_THEME_CODE){
+      return _light;
+    }
+    return _dark;
+  }
+
 }

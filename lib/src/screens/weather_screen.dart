@@ -195,10 +195,10 @@ class _WeatherScreenState extends State<WeatherScreen>
         this._showCityChangeDialog();
         break;
       case OptionsMenu.nightMode:
-        AppStateContainer.of(context).updateTheme(Themes.dark);
+        AppStateContainer.of(context).updateTheme(Themes.DARK_THEME_CODE);
         break;
       case OptionsMenu.lightMode:
-        AppStateContainer.of(context).updateTheme(Themes.light);
+        AppStateContainer.of(context).updateTheme(Themes.LIGHT_THEME_CODE);
         break;
     }
   }

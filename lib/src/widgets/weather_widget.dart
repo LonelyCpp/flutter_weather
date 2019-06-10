@@ -54,8 +54,38 @@ class WeatherWidget extends StatelessWidget {
                 color: AppStateContainer.of(context).theme.accentColor),
           ),
           Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-            ValueTile(
-                "max", '${this.weather.maxTemperature.celsius.round()}°'),
+            ValueTile("max", '${this.weather.maxTemperature.celsius.round()}°'),
+            Padding(
+              padding: const EdgeInsets.only(left: 20, right: 20),
+              child: Center(
+                  child: Container(
+                width: 1,
+                height: 30,
+                color: AppStateContainer.of(context)
+                    .theme
+                    .accentColor
+                    .withAlpha(50),
+              )),
+            ),
+            ValueTile("min", '${this.weather.minTemperature.celsius.round()}°'),
+          ]),
+          Padding(
+            child: Divider(
+              color:
+                  AppStateContainer.of(context).theme.accentColor.withAlpha(50),
+            ),
+            padding: EdgeInsets.all(10),
+          ),
+          ForecastHorizontal(weathers: weather.forecast),
+          Padding(
+            child: Divider(
+              color:
+                  AppStateContainer.of(context).theme.accentColor.withAlpha(50),
+            ),
+            padding: EdgeInsets.all(10),
+          ),
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+            ValueTile("wind speed", '${this.weather.windSpeed} m/s'),
             Padding(
               padding: const EdgeInsets.only(left: 20, right: 20),
               child: Center(
@@ -69,33 +99,9 @@ class WeatherWidget extends StatelessWidget {
               )),
             ),
             ValueTile(
-                "min", '${this.weather.minTemperature.celsius.round()}°'),
-          ]),
-          Padding(
-            child: Divider(
-              color: AppStateContainer.of(context)
-                  .theme
-                  .accentColor
-                  .withAlpha(50),
-            ),
-            padding: EdgeInsets.all(10),
-          ),
-          ForecastHorizontal(weathers: weather.forecast),
-          Padding(
-            child: Divider(
-              color: AppStateContainer.of(context)
-                  .theme
-                  .accentColor
-                  .withAlpha(50),
-            ),
-            padding: EdgeInsets.all(10),
-          ),
-          Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-            ValueTile(
                 "sunrise",
-                DateFormat('h:m a').format(
-                    DateTime.fromMillisecondsSinceEpoch(
-                        this.weather.sunrise * 1000))),
+                DateFormat('h:m a').format(DateTime.fromMillisecondsSinceEpoch(
+                    this.weather.sunrise * 1000))),
             Padding(
               padding: const EdgeInsets.only(left: 20, right: 20),
               child: Center(
@@ -110,9 +116,21 @@ class WeatherWidget extends StatelessWidget {
             ),
             ValueTile(
                 "sunset",
-                DateFormat('h:m a').format(
-                    DateTime.fromMillisecondsSinceEpoch(
-                        this.weather.sunset * 1000))),
+                DateFormat('h:m a').format(DateTime.fromMillisecondsSinceEpoch(
+                    this.weather.sunset * 1000))),
+            Padding(
+              padding: const EdgeInsets.only(left: 20, right: 20),
+              child: Center(
+                  child: Container(
+                width: 1,
+                height: 30,
+                color: AppStateContainer.of(context)
+                    .theme
+                    .accentColor
+                    .withAlpha(50),
+              )),
+            ),
+            ValueTile("humidity", '${this.weather.humidity}%'),
           ]),
         ],
       ),

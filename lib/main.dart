@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_weather/src/screens/weather_screen.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter_weather/src/themes.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   BlocSupervisor().delegate = SimpleBlocDelegate();
-  runApp(RootWidget());
+  runApp(AppStateContainer(child: WeatherApp()));
 }
 
 class SimpleBlocDelegate extends BlocDelegate {
@@ -16,25 +17,19 @@ class SimpleBlocDelegate extends BlocDelegate {
   }
 }
 
-class RootWidget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return AppStateContainer(child: WeatherApp());
-  }
-}
-
 class WeatherApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return AppStateContainer(
-        child: MaterialApp(
+    return MaterialApp(
       title: 'Flutter Weather App',
       theme: AppStateContainer.of(context).theme,
       home: WeatherScreen(),
-    ));
+    );
   }
 }
 
+/// top level widget to hold application state
+/// state is passed down with an inherited widget
 class AppStateContainer extends StatefulWidget {
   final Widget child;
 
@@ -51,7 +46,19 @@ class AppStateContainer extends StatefulWidget {
 }
 
 class _AppStateContainerState extends State<AppStateContainer> {
-  ThemeData _theme = Themes.light;
+  ThemeData _theme = Themes.getTheme(Themes.DARK_THEME_CODE);
+
+  @override
+  initState() {
+    super.initState();
+    SharedPreferences.getInstance().then((sharedPref) {
+      int themeCode =
+          sharedPref.getInt(Themes.SHARED_PREF_KEY) ?? Themes.DARK_THEME_CODE;
+      setState(() {
+        this._theme = Themes.getTheme(themeCode);
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,9 +71,12 @@ class _AppStateContainerState extends State<AppStateContainer> {
 
   ThemeData get theme => _theme;
 
-  updateTheme(ThemeData value) {
+  updateTheme(int themeCode) {
     setState(() {
-      _theme = value;
+      _theme = Themes.getTheme(themeCode);
+    });
+    SharedPreferences.getInstance().then((sharedPref) {
+      sharedPref.setInt(Themes.SHARED_PREF_KEY, themeCode);
     });
   }
 }
