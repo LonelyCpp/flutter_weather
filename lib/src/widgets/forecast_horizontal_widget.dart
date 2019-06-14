@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_weather/main.dart';
 import 'package:flutter_weather/src/model/weather.dart';
 import 'package:flutter_weather/src/widgets/value_tile.dart';
 import 'package:intl/intl.dart';
@@ -32,7 +33,7 @@ class ForecastHorizontal extends StatelessWidget {
                 child: ValueTile(
               DateFormat('E, ha').format(
                   DateTime.fromMillisecondsSinceEpoch(item.time * 1000)),
-              '${item.temperature.celsius.round()}°',
+              '${item.temperature.as(AppStateContainer.of(context).temperatureUnit).round()}°',
               iconData: item.getIconData(),
             )),
           );

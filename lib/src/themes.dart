@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class Themes {
-  static const SHARED_PREF_KEY = "theme_code";
   static const DARK_THEME_CODE = 0;
   static const LIGHT_THEME_CODE = 1;
 
@@ -22,6 +21,7 @@ class Themes {
       },
     ),
     accentColor: Colors.white,
+    disabledColor: Colors.green
   );
 
   static final _light = ThemeData(
@@ -41,6 +41,8 @@ class Themes {
       },
     ),
     accentColor: Colors.black,
+      disabledColor: Colors.green
+
   );
 
   static ThemeData getTheme(int code) {
