@@ -47,7 +47,7 @@ class WeatherWidget extends StatelessWidget {
             height: 20,
           ),
           Text(
-            '${this.weather.temperature.celsius.round()}°',
+            '${this.weather.temperature.as(AppStateContainer.of(context).temperatureUnit).round()}°',
             style: TextStyle(
                 fontSize: 100,
                 fontWeight: FontWeight.w100,

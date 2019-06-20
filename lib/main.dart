@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_weather/src/screens/routes.dart';
 import 'package:flutter_weather/src/screens/weather_screen.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter_weather/src/themes.dart';
+import 'package:flutter_weather/src/utils/constants.dart';
+import 'package:flutter_weather/src/utils/converters.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
@@ -24,6 +27,7 @@ class WeatherApp extends StatelessWidget {
       title: 'Flutter Weather App',
       theme: AppStateContainer.of(context).theme,
       home: WeatherScreen(),
+      routes: Routes.mainRoute,
     );
   }
 }
@@ -47,14 +51,19 @@ class AppStateContainer extends StatefulWidget {
 
 class _AppStateContainerState extends State<AppStateContainer> {
   ThemeData _theme = Themes.getTheme(Themes.DARK_THEME_CODE);
+  int themeCode = Themes.DARK_THEME_CODE;
+  TemperatureUnit temperatureUnit = TemperatureUnit.celsius;
 
   @override
   initState() {
     super.initState();
     SharedPreferences.getInstance().then((sharedPref) {
-      int themeCode =
-          sharedPref.getInt(Themes.SHARED_PREF_KEY) ?? Themes.DARK_THEME_CODE;
       setState(() {
+        themeCode = sharedPref.getInt(CONSTANTS.SHARED_PREF_KEY_THEME) ??
+            Themes.DARK_THEME_CODE;
+        temperatureUnit = TemperatureUnit.values[
+            sharedPref.getInt(CONSTANTS.SHARED_PREF_KEY_TEMPERATURE_UNIT) ??
+                TemperatureUnit.kelvin];
         this._theme = Themes.getTheme(themeCode);
       });
     });
@@ -74,9 +83,19 @@ class _AppStateContainerState extends State<AppStateContainer> {
   updateTheme(int themeCode) {
     setState(() {
       _theme = Themes.getTheme(themeCode);
+      this.themeCode = themeCode;
     });
     SharedPreferences.getInstance().then((sharedPref) {
-      sharedPref.setInt(Themes.SHARED_PREF_KEY, themeCode);
+      sharedPref.setInt(CONSTANTS.SHARED_PREF_KEY_THEME, themeCode);
+    });
+  }
+
+  updateTemperatureUnit(TemperatureUnit unit) {
+    setState(() {
+      this.temperatureUnit = unit;
+    });
+    SharedPreferences.getInstance().then((sharedPref) {
+      sharedPref.setInt(CONSTANTS.SHARED_PREF_KEY_THEME, unit.index);
     });
   }
 }
