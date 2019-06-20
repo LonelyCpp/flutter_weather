@@ -4,10 +4,11 @@ A Flutter application to view current weather status.
 This is my first project on my journey to learning and understanding flutter and dart.
 
 ![android](./screenshots/android.png?raw=true 'android')
-![ios](./screenshots/ios.png?raw=true 'ios')
+![ios](./screenshots/ios.gif?raw=true 'ios')
 
 ## Features
 - :white_check_mark: Beautiful minimal UI
+- :white_check_mark: Dark and Light themes
 - :white_check_mark: Current temperature, max and min temperature, sunset, sunrise
 - :white_check_mark: Custom icons for each weather condition
 - :white_check_mark: 5 day forecast
@@ -39,8 +40,7 @@ eg:
   ```
 
 ## todo
-- dark and light theme switching
-- persist city name
+- i18n support for multiple languages
 
 ## Acknowledgments
 

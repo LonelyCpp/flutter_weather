@@ -13,6 +13,12 @@ intToDouble(dynamic val) {
   }
 }
 
+enum TemperatureUnit {
+  kelvin,
+  celsius,
+  fahrenheit
+}
+
 class Temperature{
   final double _kelvin;
 
@@ -23,4 +29,19 @@ class Temperature{
   double get celsius => _kelvin - 273.15;
 
   double get fahrenheit => _kelvin * (9/5) - 459.67;
+
+  double as(TemperatureUnit unit){
+    switch(unit){
+      case TemperatureUnit.kelvin:
+        return this.kelvin;
+        break;
+      case TemperatureUnit.celsius:
+        return this.celsius;
+        break;
+      case TemperatureUnit.fahrenheit:
+        return this.fahrenheit;
+        break;
+    }
+    return this.fahrenheit;
+  }
 }

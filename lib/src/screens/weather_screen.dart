@@ -7,12 +7,11 @@ import 'package:flutter_weather/src/bloc/weather_state.dart';
 import 'package:flutter_weather/src/repository/weather_repository.dart';
 import 'package:flutter_weather/src/api/api_keys.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_weather/src/themes.dart';
 import 'package:flutter_weather/src/widgets/weather_widget.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
-enum OptionsMenu { changeCity, nightMode, lightMode }
+enum OptionsMenu { changeCity, settings }
 
 class WeatherScreen extends StatefulWidget {
   final WeatherRepository weatherRepository = WeatherRepository(
@@ -73,12 +72,8 @@ class _WeatherScreenState extends State<WeatherScreen>
                         child: Text("change city"),
                       ),
                       PopupMenuItem<OptionsMenu>(
-                        value: OptionsMenu.nightMode,
-                        child: Text("night mode"),
-                      ),
-                      PopupMenuItem<OptionsMenu>(
-                        value: OptionsMenu.lightMode,
-                        child: Text("light mode"),
+                        value: OptionsMenu.settings,
+                        child: Text("settings"),
                       ),
                     ])
           ],
@@ -194,11 +189,8 @@ class _WeatherScreenState extends State<WeatherScreen>
       case OptionsMenu.changeCity:
         this._showCityChangeDialog();
         break;
-      case OptionsMenu.nightMode:
-        AppStateContainer.of(context).updateTheme(Themes.DARK_THEME_CODE);
-        break;
-      case OptionsMenu.lightMode:
-        AppStateContainer.of(context).updateTheme(Themes.LIGHT_THEME_CODE);
+      case OptionsMenu.settings:
+        Navigator.of(context).pushNamed("/settings");
         break;
     }
   }
