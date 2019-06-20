@@ -4,7 +4,7 @@ A Flutter application to view current weather status.
 This is my first project on my journey to learning and understanding flutter and dart.
 
 ![android](./screenshots/android.png?raw=true 'android')
-![ios](./screenshots/ios.png?raw=true 'ios')
+![ios](./screenshots/ios.gif?raw=true 'ios')
 
 ## Features
 - :white_check_mark: Beautiful minimal UI
