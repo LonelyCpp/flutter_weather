@@ -8,6 +8,7 @@ This is my first project on my journey to learning and understanding flutter and
 
 ## Features
 - :white_check_mark: Beautiful minimal UI
+- :white_check_mark: Dark and Light themes
 - :white_check_mark: Current temperature, max and min temperature, sunset, sunrise
 - :white_check_mark: Custom icons for each weather condition
 - :white_check_mark: 5 day forecast
@@ -39,8 +40,7 @@ eg:
   ```
 
 ## todo
-- dark and light theme switching
-- persist city name
+- i18n support for multiple languages
 
 ## Acknowledgments
 
