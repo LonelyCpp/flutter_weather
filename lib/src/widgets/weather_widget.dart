@@ -54,7 +54,8 @@ class WeatherWidget extends StatelessWidget {
                 color: AppStateContainer.of(context).theme.accentColor),
           ),
           Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-            ValueTile("max", '${this.weather.maxTemperature.celsius.round()}°'),
+            ValueTile("max",
+                '${this.weather.maxTemperature.as(AppStateContainer.of(context).temperatureUnit).round()}°'),
             Padding(
               padding: const EdgeInsets.only(left: 20, right: 20),
               child: Center(
@@ -67,7 +68,8 @@ class WeatherWidget extends StatelessWidget {
                     .withAlpha(50),
               )),
             ),
-            ValueTile("min", '${this.weather.minTemperature.celsius.round()}°'),
+            ValueTile("min",
+                '${this.weather.minTemperature.as(AppStateContainer.of(context).temperatureUnit).round()}°'),
           ]),
           Padding(
             child: Divider(
