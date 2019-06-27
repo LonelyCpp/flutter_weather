@@ -10,6 +10,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_weather/src/widgets/weather_widget.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 enum OptionsMenu { changeCity, settings }
 
@@ -32,7 +34,9 @@ class _WeatherScreenState extends State<WeatherScreen>
   void initState() {
     super.initState();
     _weatherBloc = WeatherBloc(weatherRepository: widget.weatherRepository);
-    _weatherBloc.dispatch(FetchWeather(cityName: _cityName));
+    _fetchWeatherWithLocation().catchError((error) {
+      _fetchWeatherWithCity();
+    });
     _fadeController = AnimationController(
         duration: const Duration(milliseconds: 1000), vsync: this);
     _fadeAnimation =
@@ -49,7 +53,7 @@ class _WeatherScreenState extends State<WeatherScreen>
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text(
-                DateFormat('EEEE, MMMM yyyy').format(DateTime.now()),
+                DateFormat('EEEE, d MMMM yyyy').format(DateTime.now()),
                 style: TextStyle(
                     color: AppStateContainer.of(context)
                         .theme
@@ -90,6 +94,7 @@ class _WeatherScreenState extends State<WeatherScreen>
                   bloc: _weatherBloc,
                   builder: (_, WeatherState weatherState) {
                     if (weatherState is WeatherLoaded) {
+                      this._cityName = weatherState.weather.cityName;
                       _fadeController.reset();
                       _fadeController.forward();
                       return WeatherWidget(
@@ -131,7 +136,7 @@ class _WeatherScreenState extends State<WeatherScreen>
                                       .theme
                                       .accentColor),
                             ),
-                            onPressed: _fetchWeather,
+                            onPressed: _fetchWeatherWithCity,
                           )
                         ],
                       );
@@ -161,13 +166,13 @@ class _WeatherScreenState extends State<WeatherScreen>
               FlatButton(
                 child: Text(
                   'ok',
-                  style: TextStyle(color: Colors.black),
+                  style: TextStyle(color: Colors.black, fontSize: 16),
                 ),
                 onPressed: () {
-                  _fetchWeather();
+                  _fetchWeatherWithCity();
                   Navigator.of(context).pop();
                 },
-              )
+              ),
             ],
             content: TextField(
               autofocus: true,
@@ -175,10 +180,23 @@ class _WeatherScreenState extends State<WeatherScreen>
                 _cityName = text;
               },
               decoration: InputDecoration(
-                hintText: 'Enter the name of your city',
-                hintStyle: TextStyle(color: Colors.black),
-              ),
+                  hintText: 'Name of your city',
+                  hintStyle: TextStyle(color: Colors.black),
+                  suffixIcon: GestureDetector(
+                    onTap: () {
+                      _fetchWeatherWithLocation().catchError((error) {
+                        _fetchWeatherWithCity();
+                      });
+                      Navigator.of(context).pop();
+                    },
+                    child: Icon(
+                      Icons.my_location,
+                      color: Colors.black,
+                      size: 16,
+                    ),
+                  )),
               style: TextStyle(color: Colors.black),
+              cursorColor: Colors.black,
             ),
           );
         });
@@ -195,7 +213,52 @@ class _WeatherScreenState extends State<WeatherScreen>
     }
   }
 
-  _fetchWeather() {
+  _fetchWeatherWithCity() {
     _weatherBloc.dispatch(FetchWeather(cityName: _cityName));
+  }
+
+  _fetchWeatherWithLocation() async {
+    var permissionHandler = PermissionHandler();
+    var permissionResult = await permissionHandler
+        .requestPermissions([PermissionGroup.locationWhenInUse]);
+
+    switch (permissionResult[PermissionGroup.locationWhenInUse]) {
+      case PermissionStatus.denied:
+      case PermissionStatus.unknown:
+        print('location permission denied');
+        _showLocationDeniedDialog(permissionHandler);
+        throw Error();
+    }
+
+    Position position = await Geolocator()
+        .getCurrentPosition(desiredAccuracy: LocationAccuracy.low);
+    print(position);
+    _weatherBloc.dispatch(FetchWeather(
+        longitude: position.longitude, latitude: position.latitude));
+  }
+
+  void _showLocationDeniedDialog(PermissionHandler permissionHandler) {
+    showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            backgroundColor: Colors.white,
+            title: Text('Location is disabled :(',
+                style: TextStyle(color: Colors.black)),
+            actions: <Widget>[
+              FlatButton(
+                child: Text(
+                  'Enable!',
+                  style: TextStyle(color: Colors.green, fontSize: 16),
+                ),
+                onPressed: () {
+                  permissionHandler.openAppSettings().then((val) => print(val));
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        });
   }
 }

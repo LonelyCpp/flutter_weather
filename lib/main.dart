@@ -54,6 +54,7 @@ class _AppStateContainerState extends State<AppStateContainer> {
   int themeCode = Themes.DARK_THEME_CODE;
   TemperatureUnit temperatureUnit = TemperatureUnit.celsius;
 
+
   @override
   initState() {
     super.initState();
@@ -63,7 +64,7 @@ class _AppStateContainerState extends State<AppStateContainer> {
             Themes.DARK_THEME_CODE;
         temperatureUnit = TemperatureUnit.values[
             sharedPref.getInt(CONSTANTS.SHARED_PREF_KEY_TEMPERATURE_UNIT) ??
-                TemperatureUnit.kelvin];
+                TemperatureUnit.celsius.index];
         this._theme = Themes.getTheme(themeCode);
       });
     });
@@ -95,7 +96,7 @@ class _AppStateContainerState extends State<AppStateContainer> {
       this.temperatureUnit = unit;
     });
     SharedPreferences.getInstance().then((sharedPref) {
-      sharedPref.setInt(CONSTANTS.SHARED_PREF_KEY_THEME, unit.index);
+      sharedPref.setInt(CONSTANTS.SHARED_PREF_KEY_TEMPERATURE_UNIT, unit.index);
     });
   }
 }
