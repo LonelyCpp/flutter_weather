@@ -53,7 +53,7 @@ class _WeatherScreenState extends State<WeatherScreen>
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text(
-                DateFormat('EEEE, MMMM yyyy').format(DateTime.now()),
+                DateFormat('EEEE, d MMMM yyyy').format(DateTime.now()),
                 style: TextStyle(
                     color: AppStateContainer.of(context)
                         .theme
@@ -164,18 +164,6 @@ class _WeatherScreenState extends State<WeatherScreen>
             title: Text('Change city', style: TextStyle(color: Colors.black)),
             actions: <Widget>[
               FlatButton(
-                  child: Icon(
-                    Icons.my_location,
-                    color: Colors.black,
-                    size: 16,
-                  ),
-                  onPressed: () {
-                    _fetchWeatherWithLocation().catchError((error) {
-                      _fetchWeatherWithCity();
-                    });
-                    Navigator.of(context).pop();
-                  }),
-              FlatButton(
                 child: Text(
                   'ok',
                   style: TextStyle(color: Colors.black, fontSize: 16),
@@ -192,10 +180,23 @@ class _WeatherScreenState extends State<WeatherScreen>
                 _cityName = text;
               },
               decoration: InputDecoration(
-                hintText: 'Enter the name of your city',
-                hintStyle: TextStyle(color: Colors.black),
-              ),
+                  hintText: 'Name of your city',
+                  hintStyle: TextStyle(color: Colors.black),
+                  suffixIcon: GestureDetector(
+                    onTap: () {
+                      _fetchWeatherWithLocation().catchError((error) {
+                        _fetchWeatherWithCity();
+                      });
+                      Navigator.of(context).pop();
+                    },
+                    child: Icon(
+                      Icons.my_location,
+                      color: Colors.black,
+                      size: 16,
+                    ),
+                  )),
               style: TextStyle(color: Colors.black),
+              cursorColor: Colors.black,
             ),
           );
         });
