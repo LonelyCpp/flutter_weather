@@ -4,6 +4,8 @@ import 'package:flutter_weather/src/model/weather.dart';
 import 'package:meta/meta.dart';
 import 'package:http/http.dart' as http;
 
+/// Wrapper around the open weather map api
+/// https://openweathermap.org/current
 class WeatherApiClient {
   static const baseUrl = 'http://api.openweathermap.org';
   final apiKey;

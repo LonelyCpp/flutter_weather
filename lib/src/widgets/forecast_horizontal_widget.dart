@@ -4,6 +4,9 @@ import 'package:flutter_weather/src/model/weather.dart';
 import 'package:flutter_weather/src/widgets/value_tile.dart';
 import 'package:intl/intl.dart';
 
+/// Renders a horizontal scrolling list of weather conditions
+/// Used to show forecast
+/// Shows DateTime, Weather Condition icon and Temperature
 class ForecastHorizontal extends StatelessWidget {
   const ForecastHorizontal({
     Key key,

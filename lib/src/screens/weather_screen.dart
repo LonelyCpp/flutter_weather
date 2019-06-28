@@ -232,7 +232,6 @@ class _WeatherScreenState extends State<WeatherScreen>
 
     Position position = await Geolocator()
         .getCurrentPosition(desiredAccuracy: LocationAccuracy.low);
-    print(position);
     _weatherBloc.dispatch(FetchWeather(
         longitude: position.longitude, latitude: position.latitude));
   }
@@ -253,7 +252,7 @@ class _WeatherScreenState extends State<WeatherScreen>
                   style: TextStyle(color: Colors.green, fontSize: 16),
                 ),
                 onPressed: () {
-                  permissionHandler.openAppSettings().then((val) => print(val));
+                  permissionHandler.openAppSettings();
                   Navigator.of(context).pop();
                 },
               ),
