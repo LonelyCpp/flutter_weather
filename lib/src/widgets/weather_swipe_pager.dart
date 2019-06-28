@@ -6,7 +6,6 @@ import 'package:flutter_weather/src/widgets/current_conditions.dart';
 import 'package:flutter_weather/src/widgets/empty_widget.dart';
 import 'package:flutter_weather/src/widgets/temperature_line_chart.dart';
 
-
 class WeatherSwipePager extends StatelessWidget {
   const WeatherSwipePager({
     Key key,

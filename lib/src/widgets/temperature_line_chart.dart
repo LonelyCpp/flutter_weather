@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_weather/main.dart';
 import 'package:flutter_weather/src/model/weather.dart';
 
+/// Renders a line chart from forecast data
+/// x axis - date
+/// y axis - temperature
 class TemperatureLineChart extends StatelessWidget {
 
   final List<Weather> weathers;

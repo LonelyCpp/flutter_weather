@@ -55,7 +55,7 @@ class WeatherWidget extends StatelessWidget {
           Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
             ValueTile("wind speed", '${this.weather.windSpeed} m/s'),
             Padding(
-              padding: const EdgeInsets.only(left: 20, right: 20),
+              padding: const EdgeInsets.only(left: 15, right: 15),
               child: Center(
                   child: Container(
                 width: 1,
@@ -71,7 +71,7 @@ class WeatherWidget extends StatelessWidget {
                 DateFormat('h:m a').format(DateTime.fromMillisecondsSinceEpoch(
                     this.weather.sunrise * 1000))),
             Padding(
-              padding: const EdgeInsets.only(left: 20, right: 20),
+              padding: const EdgeInsets.only(left: 15, right: 15),
               child: Center(
                   child: Container(
                 width: 1,
@@ -87,7 +87,7 @@ class WeatherWidget extends StatelessWidget {
                 DateFormat('h:m a').format(DateTime.fromMillisecondsSinceEpoch(
                     this.weather.sunset * 1000))),
             Padding(
-              padding: const EdgeInsets.only(left: 20, right: 20),
+              padding: const EdgeInsets.only(left: 15, right: 15),
               child: Center(
                   child: Container(
                 width: 1,

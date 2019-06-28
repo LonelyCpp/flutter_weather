@@ -5,6 +5,7 @@ This is my first project on my journey to learning and understanding flutter and
 
 ![android](./screenshots/android.png?raw=true 'android')
 ![ios](./screenshots/ios.gif?raw=true 'ios')
+![ios](./screenshots/ios_chart.gif?raw=true 'ios')
 
 ## Features
 - :white_check_mark: Beautiful minimal UI
@@ -14,6 +15,7 @@ This is my first project on my journey to learning and understanding flutter and
 - :white_check_mark: 5 day forecast
 - :white_check_mark: Beautifully animated transitions
 - :white_check_mark: BLoC pattern for API calls
+- :white_check_mark: Line graph to show temperature variance
 
 ## Getting Started
 

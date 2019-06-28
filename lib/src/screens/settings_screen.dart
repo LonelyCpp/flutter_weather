@@ -15,7 +15,6 @@ class SettingsScreen extends StatelessWidget {
         padding: EdgeInsets.only(left: 10, right: 10, top: 15),
         color: AppStateContainer.of(context).theme.primaryColor,
         child: ListView(
-//          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.all(8.0),
