@@ -7,7 +7,10 @@ class _IconData extends IconData {
           fontFamily: 'WeatherIcons',
         );
 }
-
+/// Exposes specific weather icons
+/// Has all weather conditions specified by open weather maps API
+/// https://openweathermap.org/weather-conditions
+// hex values and ttf file from https://erikflowers.github.io/weather-icons/
 class WeatherIcons {
   static const IconData clear_day = const _IconData(0xf00d);
   static const IconData clear_night = const _IconData(0xf02e);

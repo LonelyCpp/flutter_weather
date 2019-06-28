@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_weather/main.dart';
 import 'package:flutter_weather/src/widgets/empty_widget.dart';
 
+/// General utility widget used to render a cell divided into three rows
+/// First row displays [label]
+/// second row displays [iconData]
+/// third row displays [value]
 class ValueTile extends StatelessWidget {
   final String label;
   final String value;
