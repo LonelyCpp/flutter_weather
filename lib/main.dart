@@ -54,7 +54,6 @@ class _AppStateContainerState extends State<AppStateContainer> {
   int themeCode = Themes.DARK_THEME_CODE;
   TemperatureUnit temperatureUnit = TemperatureUnit.celsius;
 
-
   @override
   initState() {
     super.initState();
