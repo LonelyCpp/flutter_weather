@@ -15,36 +15,38 @@ class ValueTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Text(
-          this.label,
-          style: TextStyle(
-              color: AppStateContainer.of(context)
-                  .theme
-                  .accentColor
-                  .withAlpha(80)),
-        ),
-        SizedBox(
-          height: 5,
-        ),
-        this.iconData != null
-            ? Icon(
-                iconData,
-                color: AppStateContainer.of(context).theme.accentColor,
-                size: 20,
-              )
-            : EmptyWidget(),
-        SizedBox(
-          height: 10,
-        ),
-        Text(
-          this.value,
-          style:
-              TextStyle(color: AppStateContainer.of(context).theme.accentColor),
-        ),
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Text(
+            this.label,
+            style: TextStyle(
+                color: AppStateContainer.of(context)
+                    .theme
+                    .accentColor
+                    .withAlpha(80)),
+          ),
+          SizedBox(
+            height: 5,
+          ),
+          this.iconData != null
+              ? Icon(
+                  iconData,
+                  color: AppStateContainer.of(context).theme.accentColor,
+                  size: 20,
+                )
+              : EmptyWidget(),
+          SizedBox(
+            height: 10,
+          ),
+          Text(
+            this.value,
+            style: TextStyle(
+                color: AppStateContainer.of(context).theme.accentColor),
+          ),
+        ],
+      ),
     );
   }
 }
