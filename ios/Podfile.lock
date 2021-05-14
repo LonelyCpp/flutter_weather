@@ -1,12 +1,8 @@
 PODS:
   - Flutter (1.0.0)
-  - geolocator (5.0.1):
+  - geolocator (6.2.0):
     - Flutter
-  - google_api_availability (2.0.1):
-    - Flutter
-  - location_permissions (2.0.2):
-    - Flutter
-  - permission_handler (3.1.0):
+  - "permission_handler (5.1.0+2)":
     - Flutter
   - shared_preferences (0.0.1):
     - Flutter
@@ -14,8 +10,6 @@ PODS:
 DEPENDENCIES:
   - Flutter (from `Flutter`)
   - geolocator (from `.symlinks/plugins/geolocator/ios`)
-  - google_api_availability (from `.symlinks/plugins/google_api_availability/ios`)
-  - location_permissions (from `.symlinks/plugins/location_permissions/ios`)
   - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
 
@@ -24,23 +18,17 @@ EXTERNAL SOURCES:
     :path: Flutter
   geolocator:
     :path: ".symlinks/plugins/geolocator/ios"
-  google_api_availability:
-    :path: ".symlinks/plugins/google_api_availability/ios"
-  location_permissions:
-    :path: ".symlinks/plugins/location_permissions/ios"
   permission_handler:
     :path: ".symlinks/plugins/permission_handler/ios"
   shared_preferences:
     :path: ".symlinks/plugins/shared_preferences/ios"
 
 SPEC CHECKSUMS:
-  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
-  geolocator: f3dd3b5b1761a15a4da00665774c5a8319e657d6
-  google_api_availability: 163b30f802e6148c67f092aa4501c90ddd8eec8d
-  location_permissions: 67cfaff583afbb027a9f9248196f4b79c40f3cdc
-  permission_handler: fa6b0d784b1a43cb96b468a5b8365cb130b1956a
-  shared_preferences: 1feebfa37bb57264736e16865e7ffae7fc99b523
+  Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
+  geolocator: f5e3de65e241caba7ce3e8a618803387bda73384
+  permission_handler: ccb20a9fad0ee9b1314a52b70b76b473c5f8dab0
+  shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
 
-PODFILE CHECKSUM: f32fb4e7c14f8b3ca19a369d7be425dd9241af27
+PODFILE CHECKSUM: fc81e398f362bae88bdf55239bd5cf842faad39f
 
-COCOAPODS: 1.8.4
+COCOAPODS: 1.10.1
