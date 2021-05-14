@@ -1,13 +1,11 @@
 # Flutter Weather
 
 A Flutter application to view current weather status.
-This is my first project on my journey to learning and understanding flutter and dart.
 
-![android](./screenshots/android.png?raw=true 'android')
-![ios](./screenshots/ios.gif?raw=true 'ios')
-![ios](./screenshots/ios_chart.gif?raw=true 'ios')
+![preview](./screenshots/preview.png?raw=true "preview")
 
 ## Features
+
 - :white_check_mark: Beautiful minimal UI
 - :white_check_mark: Dark and Light themes
 - :white_check_mark: Current temperature, max and min temperature, sunset, sunrise
@@ -20,11 +18,12 @@ This is my first project on my journey to learning and understanding flutter and
 ## Getting Started
 
 ### Prerequisites
+
 **Flutter**
+
 - [Flutter documentation](https://flutter.dev/docs)
 - [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
 - [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
 
 ### Installing
 
@@ -35,16 +34,18 @@ Create a file called `api_keys.dart` in `lib/src/api/`
 Make a class called `ApiKey` with your openweathermaps API key in it. Get it [here](https://openweathermap.org/api)
 
 eg:
-  ```
-  class ApiKey {
-    static const OPEN_WEATHER_MAP = 'your_key';
-  }
-  ```
+
+```
+class ApiKey {
+  static const OPEN_WEATHER_MAP = 'your_key';
+}
+```
 
 ## todo
+
 - i18n support for multiple languages
 
 ## Acknowledgments
 
-* [Weather Icon Pack](https://erikflowers.github.io/weather-icons/)
-
+- [Weather Icon Pack](https://erikflowers.github.io/weather-icons/)
+- [App Mockup](https://app-mockup.com), [photopea](http://photopea.com) (for screenshots)
