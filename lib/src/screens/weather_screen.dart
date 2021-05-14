@@ -4,7 +4,9 @@ import 'package:flutter_weather/src/bloc/weather_event.dart';
 import 'package:flutter_weather/src/bloc/weather_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_weather/src/widgets/weather_widget.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../bloc/weather_bloc.dart';
 
@@ -20,10 +22,13 @@ class _WeatherScreenState extends State<WeatherScreen>
   String _cityName = 'bengaluru';
   AnimationController _fadeController;
   Animation<double> _fadeAnimation;
+  WeatherBloc _weatherBloc;
 
   @override
   void initState() {
     super.initState();
+
+    _weatherBloc = BlocProvider.of<WeatherBloc>(context);
 
     _fetchWeatherWithLocation().catchError((error) {
       _fetchWeatherWithCity();
@@ -210,52 +215,59 @@ class _WeatherScreenState extends State<WeatherScreen>
   }
 
   _fetchWeatherWithCity() {
-    BlocProvider.of<WeatherBloc>(context)
-        .add(FetchWeather(cityName: _cityName));
+    _weatherBloc.add(FetchWeather(cityName: _cityName));
   }
 
   _fetchWeatherWithLocation() async {
-    // var permissionHandler = PermissionHandler();
-    // var permissionResult = await permissionHandler
-    //     .requestPermissions([PermissionGroup.locationWhenInUse]);
+    var permissionResult = await Permission.locationWhenInUse.status;
 
-    // switch (permissionResult[PermissionGroup.locationWhenInUse]) {
-    //   case PermissionStatus.denied:
-    //   case PermissionStatus.unknown:
-    //     print('location permission denied');
-    //     _showLocationDeniedDialog(permissionHandler);
-    //     throw Error();
-    // }
+    switch (permissionResult) {
+      case PermissionStatus.restricted:
+      case PermissionStatus.permanentlyDenied:
+        print('location permission denied');
+        _showLocationDeniedDialog();
+        break;
 
-    // Position position = await Geolocator()
-    //     .getCurrentPosition(desiredAccuracy: LocationAccuracy.low);
-    // _weatherBloc.dispatch(FetchWeather(
-    //     longitude: position.longitude, latitude: position.latitude));
+      case PermissionStatus.denied:
+        await Permission.locationWhenInUse.request();
+        _fetchWeatherWithLocation();
+        break;
+
+      case PermissionStatus.limited:
+      case PermissionStatus.granted:
+        Position position = await Geolocator.getCurrentPosition(
+            desiredAccuracy: LocationAccuracy.low);
+
+        _weatherBloc.add(FetchWeather(
+          longitude: position.longitude,
+          latitude: position.latitude,
+        ));
+        break;
+    }
   }
 
   void _showLocationDeniedDialog() {
-    //(PermissionHandler permissionHandler) {
-    // showDialog(
-    //     context: context,
-    //     barrierDismissible: true,
-    //     builder: (BuildContext context) {
-    //       return AlertDialog(
-    //         backgroundColor: Colors.white,
-    //         title: Text('Location is disabled :(',
-    //             style: TextStyle(color: Colors.black)),
-    //         actions: <Widget>[
-    //           FlatButton(
-    //             child: Text(
-    //               'Enable!',
-    //               style: TextStyle(color: Colors.green, fontSize: 16),
-    //             ),
-    //             onPressed: () {
-    //               permissionHandler.openAppSettings();
-    //               Navigator.of(context).pop();
-    //             },
-    //           ),
-    //         ],
-    //       );
-    //     });
+    showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            backgroundColor: Colors.white,
+            title: Text('Location is disabled :(',
+                style: TextStyle(color: Colors.black)),
+            actions: <Widget>[
+              FlatButton(
+                child: Text(
+                  'Enable!',
+                  style: TextStyle(color: Colors.green, fontSize: 16),
+                ),
+                onPressed: () {
+                  openAppSettings();
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        });
   }
 }
