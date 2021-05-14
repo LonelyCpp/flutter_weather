@@ -19,10 +19,10 @@ class WeatherScreen extends StatefulWidget {
 
 class _WeatherScreenState extends State<WeatherScreen>
     with TickerProviderStateMixin {
-  String _cityName = 'bengaluru';
-  AnimationController _fadeController;
-  Animation<double> _fadeAnimation;
   WeatherBloc _weatherBloc;
+  String _cityName = 'bengaluru';
+  Animation<double> _fadeAnimation;
+  AnimationController _fadeController;
 
   @override
   void initState() {
@@ -47,9 +47,11 @@ class _WeatherScreenState extends State<WeatherScreen>
 
   @override
   Widget build(BuildContext context) {
+    ThemeData appTheme = AppStateContainer.of(context).theme;
+
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: AppStateContainer.of(context).theme.primaryColor,
+          backgroundColor: appTheme.primaryColor,
           elevation: 0,
           title: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -57,11 +59,9 @@ class _WeatherScreenState extends State<WeatherScreen>
               Text(
                 DateFormat('EEEE, d MMMM yyyy').format(DateTime.now()),
                 style: TextStyle(
-                    color: AppStateContainer.of(context)
-                        .theme
-                        .accentColor
-                        .withAlpha(80),
-                    fontSize: 14),
+                  color: appTheme.accentColor.withAlpha(80),
+                  fontSize: 14,
+                ),
               )
             ],
           ),
@@ -69,7 +69,7 @@ class _WeatherScreenState extends State<WeatherScreen>
             PopupMenuButton<OptionsMenu>(
                 child: Icon(
                   Icons.more_vert,
-                  color: AppStateContainer.of(context).theme.accentColor,
+                  color: appTheme.accentColor,
                 ),
                 onSelected: this._onOptionMenuItemSelected,
                 itemBuilder: (context) => <PopupMenuEntry<OptionsMenu>>[
@@ -88,16 +88,16 @@ class _WeatherScreenState extends State<WeatherScreen>
         body: Material(
           child: Container(
             constraints: BoxConstraints.expand(),
-            decoration: BoxDecoration(
-                color: AppStateContainer.of(context).theme.primaryColor),
+            decoration: BoxDecoration(color: appTheme.primaryColor),
             child: FadeTransition(
               opacity: _fadeAnimation,
               child: BlocBuilder<WeatherBloc, WeatherState>(
                   builder: (_, WeatherState weatherState) {
+                _fadeController.reset();
+                _fadeController.forward();
+
                 if (weatherState is WeatherLoaded) {
                   this._cityName = weatherState.weather.cityName;
-                  _fadeController.reset();
-                  _fadeController.forward();
                   return WeatherWidget(
                     weather: weatherState.weather,
                   );
@@ -124,18 +124,15 @@ class _WeatherScreenState extends State<WeatherScreen>
                       Text(
                         errorText,
                         style: TextStyle(
-                            color: AppStateContainer.of(context)
-                                .theme
-                                .accentColor),
-                      ),
-                      FlatButton(
-                        child: Text(
-                          "Try Again",
-                          style: TextStyle(
-                              color: AppStateContainer.of(context)
-                                  .theme
-                                  .accentColor),
+                          color: Colors.red,
                         ),
+                      ),
+                      TextButton(
+                        style: TextButton.styleFrom(
+                          primary: appTheme.accentColor,
+                          elevation: 1,
+                        ),
+                        child: Text("Try Again"),
                         onPressed: _fetchWeatherWithCity,
                       )
                     ],
@@ -143,12 +140,13 @@ class _WeatherScreenState extends State<WeatherScreen>
                 } else if (weatherState is WeatherLoading) {
                   return Center(
                     child: CircularProgressIndicator(
-                      backgroundColor:
-                          AppStateContainer.of(context).theme.primaryColor,
+                      backgroundColor: appTheme.primaryColor,
                     ),
                   );
                 }
-                return Container();
+                return Container(
+                  child: Text('No city set'),
+                );
               }),
             ),
           ),
@@ -160,14 +158,17 @@ class _WeatherScreenState extends State<WeatherScreen>
         context: context,
         barrierDismissible: true,
         builder: (BuildContext context) {
+          ThemeData appTheme = AppStateContainer.of(context).theme;
+
           return AlertDialog(
             backgroundColor: Colors.white,
             title: Text('Change city', style: TextStyle(color: Colors.black)),
             actions: <Widget>[
-              FlatButton(
-                child: Text(
-                  'ok',
-                  style: TextStyle(color: Colors.black, fontSize: 16),
+              TextButton(
+                child: Text('ok'),
+                style: TextButton.styleFrom(
+                  primary: appTheme.accentColor,
+                  elevation: 1,
                 ),
                 onPressed: () {
                   _fetchWeatherWithCity();
@@ -235,8 +236,12 @@ class _WeatherScreenState extends State<WeatherScreen>
 
       case PermissionStatus.limited:
       case PermissionStatus.granted:
+        print('getting location');
         Position position = await Geolocator.getCurrentPosition(
-            desiredAccuracy: LocationAccuracy.low);
+            desiredAccuracy: LocationAccuracy.low,
+            timeLimit: Duration(seconds: 2));
+
+        print(position.toString());
 
         _weatherBloc.add(FetchWeather(
           longitude: position.longitude,
@@ -251,15 +256,18 @@ class _WeatherScreenState extends State<WeatherScreen>
         context: context,
         barrierDismissible: true,
         builder: (BuildContext context) {
+          ThemeData appTheme = AppStateContainer.of(context).theme;
+
           return AlertDialog(
             backgroundColor: Colors.white,
             title: Text('Location is disabled :(',
                 style: TextStyle(color: Colors.black)),
             actions: <Widget>[
-              FlatButton(
-                child: Text(
-                  'Enable!',
-                  style: TextStyle(color: Colors.green, fontSize: 16),
+              TextButton(
+                child: Text('Enable!'),
+                style: TextButton.styleFrom(
+                  primary: appTheme.accentColor,
+                  elevation: 1,
                 ),
                 onPressed: () {
                   openAppSettings();
