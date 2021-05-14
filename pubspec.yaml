@@ -14,37 +14,35 @@ description: A Flutter application to view current weather status.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.6.0 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  http: ^0.12.0+2
-  equatable: ^0.2.4
-  bloc: ^0.13.0
-  flutter_bloc: ^0.13.0
-  intl: ^0.15.8
-  shared_preferences: 0.5.3+1
-  geolocator: ^5.0.0
-  permission_handler: ^3.1.0
-  charts_flutter: ^0.6.0
-  flutter_swiper : ^1.1.6
+  http: ^0.13.3
+  equatable: ^2.0.0
+  bloc: ^7.0.0
+  flutter_bloc: ^7.0.0
+  intl: ^0.17.0
+  shared_preferences: ^2.0.5
+  geolocator: ^7.0.3
+  permission_handler: ^7.1.0
+  charts_flutter: ^0.10.0
+  flutter_swiper: ^1.1.6
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^0.1.2
+  cupertino_icons: ^1.0.3
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec
 
 # The following section is specific to Flutter.
 flutter:
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
