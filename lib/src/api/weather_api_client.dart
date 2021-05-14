@@ -20,7 +20,8 @@ class WeatherApiClient {
     final url =
         '$baseUrl/data/2.5/weather?lat=$latitude&lon=$longitude&appid=$apiKey';
     print('fetching $url');
-    final res = await this.httpClient.get(url);
+
+    final res = await this.httpClient.get(Uri.parse(url));
     if (res.statusCode != 200) {
       throw HTTPException(res.statusCode, "unable to fetch weather data");
     }
@@ -31,7 +32,8 @@ class WeatherApiClient {
   Future<Weather> getWeatherData(String cityName) async {
     final url = '$baseUrl/data/2.5/weather?q=$cityName&appid=$apiKey';
     print('fetching $url');
-    final res = await this.httpClient.get(url);
+    final res = await this.httpClient.get(Uri.parse(url));
+
     if (res.statusCode != 200) {
       throw HTTPException(res.statusCode, "unable to fetch weather data");
     }
@@ -42,7 +44,7 @@ class WeatherApiClient {
   Future<List<Weather>> getForecast(String cityName) async {
     final url = '$baseUrl/data/2.5/forecast?q=$cityName&appid=$apiKey';
     print('fetching $url');
-    final res = await this.httpClient.get(url);
+    final res = await this.httpClient.get(Uri.parse(url));
     if (res.statusCode != 200) {
       throw HTTPException(res.statusCode, "unable to fetch weather data");
     }
