@@ -53,6 +53,7 @@ class WeatherApp extends StatelessWidget {
 
 /// top level widget to hold application state
 /// state is passed down with an inherited widget
+/// inherited widget state is mainly used to hold app theme and temerature unit
 class AppStateContainer extends StatefulWidget {
   final Widget child;
 

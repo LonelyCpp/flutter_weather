@@ -13,6 +13,8 @@ class WeatherWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ThemeData appTheme = AppStateContainer.of(context).theme;
+
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -20,35 +22,33 @@ class WeatherWidget extends StatelessWidget {
           Text(
             this.weather.cityName.toUpperCase(),
             style: TextStyle(
-                fontWeight: FontWeight.w900,
-                letterSpacing: 5,
-                color: AppStateContainer.of(context).theme.accentColor,
-                fontSize: 25),
+              fontSize: 25,
+              letterSpacing: 5,
+              color: appTheme.accentColor,
+              fontWeight: FontWeight.w900,
+            ),
           ),
-          SizedBox(
-            height: 20,
-          ),
+          SizedBox(height: 20),
           Text(
             this.weather.description.toUpperCase(),
             style: TextStyle(
-                fontWeight: FontWeight.w100,
-                letterSpacing: 5,
-                fontSize: 15,
-                color: AppStateContainer.of(context).theme.accentColor),
+              fontSize: 15,
+              letterSpacing: 5,
+              fontWeight: FontWeight.w100,
+              color: appTheme.accentColor,
+            ),
           ),
           WeatherSwipePager(weather: weather),
           Padding(
             child: Divider(
-              color:
-                  AppStateContainer.of(context).theme.accentColor.withAlpha(50),
+              color: appTheme.accentColor.withAlpha(50),
             ),
             padding: EdgeInsets.all(10),
           ),
           ForecastHorizontal(weathers: weather.forecast),
           Padding(
             child: Divider(
-              color:
-                  AppStateContainer.of(context).theme.accentColor.withAlpha(50),
+              color: appTheme.accentColor.withAlpha(50),
             ),
             padding: EdgeInsets.all(10),
           ),

@@ -6,14 +6,16 @@ import 'package:flutter_weather/src/utils/converters.dart';
 class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    ThemeData appTheme = AppStateContainer.of(context).theme;
+
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: AppStateContainer.of(context).theme.primaryColor,
+        backgroundColor: appTheme.primaryColor,
         title: Text("Settings"),
       ),
       body: Container(
         padding: EdgeInsets.only(left: 10, right: 10, top: 15),
-        color: AppStateContainer.of(context).theme.primaryColor,
+        color: appTheme.primaryColor,
         child: ListView(
           children: <Widget>[
             Padding(
@@ -21,7 +23,7 @@ class SettingsScreen extends StatelessWidget {
               child: Text(
                 "Theme",
                 style: TextStyle(
-                  color: AppStateContainer.of(context).theme.accentColor,
+                  color: appTheme.accentColor,
                   fontWeight: FontWeight.bold,
                   fontSize: 18,
                 ),
@@ -42,8 +44,7 @@ class SettingsScreen extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     "Dark",
-                    style: TextStyle(
-                        color: AppStateContainer.of(context).theme.accentColor),
+                    style: TextStyle(color: appTheme.accentColor),
                   ),
                   Radio(
                     value: Themes.DARK_THEME_CODE,
@@ -51,14 +52,13 @@ class SettingsScreen extends StatelessWidget {
                     onChanged: (value) {
                       AppStateContainer.of(context).updateTheme(value);
                     },
-                    activeColor:
-                        AppStateContainer.of(context).theme.accentColor,
+                    activeColor: appTheme.accentColor,
                   )
                 ],
               ),
             ),
             Divider(
-              color: AppStateContainer.of(context).theme.primaryColor,
+              color: appTheme.primaryColor,
               height: 1,
             ),
             Container(
@@ -77,8 +77,7 @@ class SettingsScreen extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     "Light",
-                    style: TextStyle(
-                        color: AppStateContainer.of(context).theme.accentColor),
+                    style: TextStyle(color: appTheme.accentColor),
                   ),
                   Radio(
                     value: Themes.LIGHT_THEME_CODE,
@@ -86,8 +85,7 @@ class SettingsScreen extends StatelessWidget {
                     onChanged: (value) {
                       AppStateContainer.of(context).updateTheme(value);
                     },
-                    activeColor:
-                        AppStateContainer.of(context).theme.accentColor,
+                    activeColor: appTheme.accentColor,
                   )
                 ],
               ),
@@ -98,7 +96,7 @@ class SettingsScreen extends StatelessWidget {
               child: Text(
                 "Unit",
                 style: TextStyle(
-                  color: AppStateContainer.of(context).theme.accentColor,
+                  color: appTheme.accentColor,
                   fontWeight: FontWeight.bold,
                   fontSize: 18,
                 ),
@@ -119,8 +117,7 @@ class SettingsScreen extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     "Celsius",
-                    style: TextStyle(
-                        color: AppStateContainer.of(context).theme.accentColor),
+                    style: TextStyle(color: appTheme.accentColor),
                   ),
                   Radio(
                     value: TemperatureUnit.celsius.index,
@@ -130,14 +127,13 @@ class SettingsScreen extends StatelessWidget {
                       AppStateContainer.of(context)
                           .updateTemperatureUnit(TemperatureUnit.values[value]);
                     },
-                    activeColor:
-                        AppStateContainer.of(context).theme.accentColor,
+                    activeColor: appTheme.accentColor,
                   )
                 ],
               ),
             ),
             Divider(
-              color: AppStateContainer.of(context).theme.primaryColor,
+              color: appTheme.primaryColor,
               height: 1,
             ),
             Container(
@@ -151,8 +147,7 @@ class SettingsScreen extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     "Fahrenheit",
-                    style: TextStyle(
-                        color: AppStateContainer.of(context).theme.accentColor),
+                    style: TextStyle(color: appTheme.accentColor),
                   ),
                   Radio(
                     value: TemperatureUnit.fahrenheit.index,
@@ -162,14 +157,13 @@ class SettingsScreen extends StatelessWidget {
                       AppStateContainer.of(context)
                           .updateTemperatureUnit(TemperatureUnit.values[value]);
                     },
-                    activeColor:
-                        AppStateContainer.of(context).theme.accentColor,
+                    activeColor: appTheme.accentColor,
                   )
                 ],
               ),
             ),
             Divider(
-              color: AppStateContainer.of(context).theme.primaryColor,
+              color: appTheme.primaryColor,
               height: 1,
             ),
             Container(
@@ -188,8 +182,7 @@ class SettingsScreen extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     "Kelvin",
-                    style: TextStyle(
-                        color: AppStateContainer.of(context).theme.accentColor),
+                    style: TextStyle(color: appTheme.accentColor),
                   ),
                   Radio(
                     value: TemperatureUnit.kelvin.index,
@@ -199,8 +192,7 @@ class SettingsScreen extends StatelessWidget {
                       AppStateContainer.of(context)
                           .updateTemperatureUnit(TemperatureUnit.values[value]);
                     },
-                    activeColor:
-                        AppStateContainer.of(context).theme.accentColor,
+                    activeColor: appTheme.accentColor,
                   )
                 ],
               ),

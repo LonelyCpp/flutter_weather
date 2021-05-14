@@ -16,6 +16,8 @@ class WeatherSwipePager extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ThemeData appTheme = AppStateContainer.of(context).theme;
+
     return Container(
       width: MediaQuery.of(context).size.width,
       height: 300,
@@ -36,16 +38,16 @@ class WeatherSwipePager extends StatelessWidget {
           return EmptyWidget();
         },
         pagination: new SwiperPagination(
-            margin: new EdgeInsets.all(5.0),
-            builder: new DotSwiperPaginationBuilder(
-                size: 5,
-                activeSize: 5,
-                color: AppStateContainer.of(context)
-                    .theme
-                    .accentColor
-                    .withOpacity(0.4),
-                activeColor:
-                AppStateContainer.of(context).theme.accentColor)),
+          margin: new EdgeInsets.all(5.0),
+          builder: new DotSwiperPaginationBuilder(
+              size: 5,
+              activeSize: 5,
+              color: AppStateContainer.of(context)
+                  .theme
+                  .accentColor
+                  .withOpacity(0.4),
+              activeColor: appTheme.accentColor),
+        ),
       ),
     );
   }
